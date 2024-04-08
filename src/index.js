@@ -87,7 +87,3 @@ popups.forEach(function(popup) {
 
 
 
-
-
-
-
