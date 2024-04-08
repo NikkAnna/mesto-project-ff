@@ -49,10 +49,10 @@ newPlaceForm.addEventListener(
 
 editProfileButton.addEventListener(
     'click', () => {
-    updateEditProfileForm(
-        editProfileFormName, editProfileFormDescription, profileTitle.textContent, profileDescription.textContent
-    );
-    openModal(editProfileFormPopup);
+        updateEditProfileForm(
+            editProfileFormName, editProfileFormDescription, profileTitle.textContent, profileDescription.textContent
+        );
+        openModal(editProfileFormPopup);
     }
 );
 
@@ -63,10 +63,12 @@ editProfileForm.addEventListener(
     )
 );
 
-newPlaceButton.addEventListener('click', () => { 
-    clearNewPlaceForm(newPlaceName, newPlaceImage);
-    openModal(newPlacePopup);
-});
+newPlaceButton.addEventListener(
+    'click', () => { 
+        clearNewPlaceForm(newPlaceName, newPlaceImage);
+        openModal(newPlacePopup);
+    }
+);
 
 popups.forEach(function(popup) {
     popup.classList.add('popup_is-animated');
