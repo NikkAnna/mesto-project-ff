@@ -1,8 +1,9 @@
 //функции, связанные с открытием/ закрытием модальных окон,
 //обновлением и добавлением информации о пользователей в модальном окне
 
-import { createCard, placesList, deleteCard, addLike } from "./card";
-import { editFormName, editFormDescription, profileTitle, profileDescription, placeImage, placeName } from "../index";
+import { 
+    createCard
+} from "./card";
 
 function openModal(popup) {
     popup.classList.add('popup_is-opened');
@@ -22,14 +23,11 @@ function closeModal(popup) {
     document.removeEventListener('keydown', closeModalEsc);
 }
 
-function updateProfile(evt, popup, editFormName, editFormDescription, profileTitle, profileDescription) {
+function updateProfile(evt, popup, title, description, profileTitle, profileDescription) {
     evt.preventDefault();
   
-    const formNameValue = editFormName.value;
-    const FormDescriptionValue = editFormDescription.value;
-  
-    profileTitle.textContent = formNameValue;
-    profileDescription.textContent = FormDescriptionValue;
+    profileTitle.textContent = title;
+    profileDescription.textContent = description;
   
     closeModal(popup);
 }
@@ -66,4 +64,13 @@ function createPopupImage(link, name, description) {
     openModal(imagePopup);
 }
 
-export { openModal, closeModal, closeModalEsc, handleAddPlace, updateEditProfileForm, clearNewPlaceForm, updateProfile, createPopupImage }
+export { 
+    openModal, 
+    closeModal, 
+    closeModalEsc, 
+    handleAddPlace, 
+    updateEditProfileForm, 
+    clearNewPlaceForm, 
+    updateProfile, 
+    createPopupImage 
+}

@@ -1,4 +1,6 @@
-import { createPopupImage } from "./modal";
+import { 
+    createPopupImage 
+} from "./modal";
 
 const cardTemplate = document.querySelector('#card-template').content;
 const placesList = document.querySelector('.places__list');
@@ -35,4 +37,12 @@ function addCard(card) {
     placesList.append(card);
 }
 
-export { createCard, deleteCard, addCard, createPopupImage, addLike, cardTemplate, placesList }
+export { 
+    createCard, 
+    deleteCard, 
+    addCard, 
+    createPopupImage, 
+    addLike, 
+    cardTemplate, 
+    placesList 
+}

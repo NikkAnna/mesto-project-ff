@@ -1,7 +1,23 @@
 import './pages/index.css';
-import { initialCards } from './scripts/cards.js';
-import { createCard, deleteCard, addCard, addLike, cardTemplate, placesList } from './scripts/card.js';
-import { openModal, closeModal, closeModalEsc, updateProfile, updateEditProfileForm, handleAddPlace, clearNewPlaceForm, createPopupImage } from './scripts/modal.js';
+import { 
+    initialCards 
+} from './scripts/cards.js';
+import { 
+    createCard, 
+    deleteCard, 
+    addCard, 
+    addLike, 
+    placesList 
+} from './scripts/card.js';
+import { 
+    openModal, 
+    closeModal, 
+    updateProfile, 
+    updateEditProfileForm, 
+    handleAddPlace, 
+    clearNewPlaceForm, 
+    createPopupImage 
+} from './scripts/modal.js';
 
 const popups = document.querySelectorAll('.popup');
 
@@ -24,14 +40,28 @@ initialCards.forEach(function(item) {
     addCard(card);
 });
 
-newPlaceForm.addEventListener('submit', (evt) => handleAddPlace(evt, newPlacePopup, newPlaceImage, newPlaceName, deleteCard, createPopupImage, addLike, placesList));
+newPlaceForm.addEventListener(
+    'submit', 
+    (evt) => handleAddPlace(
+        evt, newPlacePopup, newPlaceImage, newPlaceName, deleteCard, createPopupImage, addLike, placesList
+    )
+);
 
-editProfileButton.addEventListener('click', () => {
-  updateEditProfileForm(editProfileFormName, editProfileFormDescription, profileTitle.textContent, profileDescription.textContent);
-  openModal(editProfileFormPopup);
-});
+editProfileButton.addEventListener(
+    'click', () => {
+    updateEditProfileForm(
+        editProfileFormName, editProfileFormDescription, profileTitle.textContent, profileDescription.textContent
+    );
+    openModal(editProfileFormPopup);
+    }
+);
 
-editProfileForm.addEventListener('submit', (evt) => updateProfile(evt, editProfileFormPopup, editProfileFormName, editProfileFormDescription, profileTitle, profileDescription));
+editProfileForm.addEventListener(
+    'submit',
+    (evt) => updateProfile(
+        evt, editProfileFormPopup, editProfileFormName.value, editProfileFormDescription.value, profileTitle, profileDescription
+    )
+);
 
 newPlaceButton.addEventListener('click', () => { 
     clearNewPlaceForm(newPlaceName, newPlaceImage);
