@@ -12,7 +12,7 @@ import {
 import { 
     openModal, 
     closeModal, 
-    updateProfile, 
+    handleUpdateProfile, 
     updateEditProfileForm, 
     handleAddPlace, 
     clearNewPlaceForm, 
@@ -58,7 +58,7 @@ editProfileButton.addEventListener(
 
 editProfileForm.addEventListener(
     'submit',
-    (evt) => updateProfile(
+    (evt) => handleUpdateProfile(
         evt, editProfileFormPopup, editProfileFormName.value, editProfileFormDescription.value, profileTitle, profileDescription
     )
 );

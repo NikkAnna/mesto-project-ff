@@ -23,7 +23,7 @@ function closeModal(popup) {
     document.removeEventListener('keydown', closeModalEsc);
 }
 
-function updateProfile(evt, popup, title, description, profileTitle, profileDescription) {
+function handleUpdateProfile(evt, popup, title, description, profileTitle, profileDescription) {
     evt.preventDefault();
   
     profileTitle.textContent = title;
@@ -71,6 +71,6 @@ export {
     handleAddPlace, 
     updateEditProfileForm, 
     clearNewPlaceForm, 
-    updateProfile, 
+    handleUpdateProfile, 
     createPopupImage 
 }
