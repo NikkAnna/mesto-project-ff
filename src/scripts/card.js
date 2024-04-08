@@ -1,4 +1,4 @@
-import { openModal } from "../index";
+import { createPopupImage } from "./modal";
 
 const cardTemplate = document.querySelector('#card-template').content;
 const placesList = document.querySelector('.places__list');
@@ -7,21 +7,6 @@ function deleteCard(card) {
     card.remove();
 };
   
-function createPopupImage(link, name, description) {
-    const imagePopup = document.querySelector('.popup_type_image');
-    const image = imagePopup.querySelector('.popup__image');
-    const text = imagePopup.querySelector('.popup__caption');
-    image.src = link;
-    image.alt = description;
-    text.textContent = name;
-        
-    openModal(imagePopup);
-}
-
-function addLike (evt) {
-    evt.target.classList.toggle('card__like-button_is-active');
-}
-
 function createCard(link, name, deleteCard, createPopupImage, addLike, description = 'красивая фотография') {
     const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   
@@ -42,6 +27,10 @@ function createCard(link, name, deleteCard, createPopupImage, addLike, descripti
     return cardElement;
 };
   
+function addLike(evt) {
+    evt.target.classList.toggle('card__like-button_is-active');
+};
+
 function addCard(card) {
     placesList.append(card);
 }
