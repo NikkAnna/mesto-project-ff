@@ -1,15 +1,11 @@
-import { 
-    createPopupImage 
-} from "./modal";
 
 const cardTemplate = document.querySelector('#card-template').content;
-const placesList = document.querySelector('.places__list');
 
 function deleteCard(card) {
     card.remove();
 }
 
-function createCard(link, name, deleteCard, createPopupImage, addLike, description = 'красивая фотография') {
+function createCard(link, name, deleteCard, createPopupLargeCard, addCardLike, description = 'красивая фотография') {
     const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   
     const cardImage = cardElement.querySelector('.card__image');
@@ -18,10 +14,10 @@ function createCard(link, name, deleteCard, createPopupImage, addLike, descripti
 
     cardElement.querySelector('.card__title').textContent = name;
 
-    cardImage.addEventListener('click', () => createPopupImage(link, name, description));
+    cardImage.addEventListener('click', () => createPopupLargeCard(link, name, description));
   
     const likebutton = cardElement.querySelector('.card__like-button');
-    likebutton.addEventListener('click', (evt) => addLike(evt));
+    likebutton.addEventListener('click', (evt) => addCardLike(evt));
     
     const deleteButton = cardElement.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', () => deleteCard(cardElement));
@@ -29,20 +25,13 @@ function createCard(link, name, deleteCard, createPopupImage, addLike, descripti
     return cardElement;
 }
 
-function addLike(evt) {
+function addCardLike(evt) {
     evt.target.classList.toggle('card__like-button_is-active');
-}
-
-function addCard(card) {
-    placesList.append(card);
 }
 
 export { 
     createCard, 
     deleteCard, 
-    addCard, 
-    createPopupImage, 
-    addLike, 
-    cardTemplate, 
-    placesList 
+    addCardLike, 
+    cardTemplate
 }

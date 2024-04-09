@@ -9,6 +9,7 @@
   font-family: 'Inter', Arial, sans-serif;
   color: #fff;
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   padding: 36px 0;
 }

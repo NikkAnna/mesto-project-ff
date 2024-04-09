@@ -4,6 +4,7 @@
   "description description";
   grid-template-columns: minmax(auto, 295px) auto;
   grid-gap: 9px 17px;
+  padding: 0 20px 0 5px;
 }
 
 @media screen and (max-width: 740px) {
@@ -26,5 +27,6 @@
     flex-wrap: wrap;
     justify-content: center;
     margin: 26px 0 33px 0;
+    padding: 0;
   }
 }
