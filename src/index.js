@@ -1,7 +1,7 @@
 import './pages/index.css';
-import { 
-    initialCards 
-} from './scripts/cards.js';
+// import { 
+//     initialCards 
+// } from './scripts/cards.js';
 import { 
     createCard, 
     deleteCard, 
@@ -16,12 +16,19 @@ import {
     enableValidation,
     clearValidation
 } from './scripts/validation.js'
+import {
+    config,
+    getRequest,
+    postRequest,
+    patchRequest
+} from './scripts/api.js'
 
 const popups = document.querySelectorAll('.popup');
 const placesList = document.querySelector('.places__list');
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const profileAvatar = document.querySelector('.profile__image')
 
 const popupProfile = document.querySelector('.popup_type_edit');
 const buttonOpenPopupProfile = document.querySelector('.profile__edit-button');
@@ -39,6 +46,9 @@ const popupLargeCard = document.querySelector('.popup_type_image');
 const popupLargeCardImage = popupLargeCard.querySelector('.popup__image');
 const popupLargeCardText = popupLargeCard.querySelector('.popup__caption');
 
+const urlMyProfile = config.baseUrl + '/users/me';
+const urlCards = config.baseUrl + '/cards';
+
 
 function addCard(card) {
     placesList.append(card);
@@ -49,7 +59,12 @@ function handleUpdateProfile(evt, popup, title, description, profileTitle, profi
   
     profileTitle.textContent = title;
     profileDescription.textContent = description;
-  
+
+    patchRequest(urlMyProfile, config, {
+        name: profileTitle.textContent,
+        about: profileDescription.textContent,
+    })
+
     closeModal(popup);
 }
 
@@ -67,6 +82,14 @@ function handleOpenPopupNewPlace(evt, popup, placeImage, placeName, deleteCard, 
     evt.preventDefault();
   
     const card = createCard(placeImage.value, placeName.value, deleteCard, createPopupImage, addCardLike);
+
+    postRequest(urlCards, config, {
+        name: placeName.value,
+        link: placeImage.value,
+    }).then((data) => {
+        console.log(data)
+    })
+
     placesList.prepend(card);
   
     closeModal(popup);
@@ -82,10 +105,26 @@ function createPopupLargeCard(link, name, description) {
     openModal(popupLargeCard);
 }
 
-initialCards.forEach(function(item) {
-    const card = createCard(item.link, item.name, deleteCard, createPopupLargeCard, addCardLike, item.description);
-    addCard(card);
-});
+// initialCards.forEach(function(item) {
+//     const card = createCard(item.link, item.name, deleteCard, createPopupLargeCard, addCardLike, item.description);
+//     addCard(card);
+// });
+
+Promise.all([
+    getRequest(urlMyProfile, config),
+    getRequest(urlCards, config)
+]).then(([profileData, cardsData]) => {
+    // console.log({profileData, cardsData})
+    profileTitle.textContent = profileData.name;
+    profileDescription.textContent = profileData.about;
+    profileAvatar.style.backgroundImage = `url(${profileData.avatar})`;
+
+    cardsData.forEach((card) => {
+        const cardItem = createCard(card.link, card.name, deleteCard, createPopupLargeCard, addCardLike)
+        addCard(cardItem);
+    })
+})
+
 
 popupNewPlaceForm.addEventListener(
     'submit', 
@@ -139,7 +178,6 @@ popups.forEach(function(popup) {
     popup.addEventListener('click', (evt) => closeModalByOverlayAndCloseButton(evt, popup))
 });
 
-
 enableValidation({
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
@@ -147,4 +185,16 @@ enableValidation({
     inactiveButtonClass: 'popup__button_disabled',
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__error_visible'
-  });
+});
+
+
+
+
+// getRequest(urlMyProfile, config)
+// .then((data) => {
+//     profileTitle.textContent = data.name;
+//     profileDescription.textContent = data.about;
+//     profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+// })
+
+

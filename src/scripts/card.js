@@ -29,9 +29,14 @@ function addCardLike(evt) {
     evt.target.classList.toggle('card__like-button_is-active');
 }
 
+// function getProfile(name, description, avatar) {
+    
+// }
+
 export { 
     createCard, 
     deleteCard, 
     addCardLike, 
     cardTemplate
 }
+
