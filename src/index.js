@@ -12,6 +12,10 @@ import {
     closeModal,
     closeModalByOverlayAndCloseButton
 } from './scripts/modal.js';
+import {
+    enableValidation,
+    clearValidation
+} from './scripts/validation.js'
 
 const popups = document.querySelectorAll('.popup');
 const placesList = document.querySelector('.places__list');
@@ -34,6 +38,7 @@ const popupNewPlaceFormImage = document.querySelector('.popup__input_type_url');
 const popupLargeCard = document.querySelector('.popup_type_image');
 const popupLargeCardImage = popupLargeCard.querySelector('.popup__image');
 const popupLargeCardText = popupLargeCard.querySelector('.popup__caption');
+
 
 function addCard(card) {
     placesList.append(card);
@@ -95,6 +100,13 @@ buttonOpenPopupProfile.addEventListener(
         updatePopupProfileForm(
             popupProfileFormName, popupProfileFormDescription, profileTitle.textContent, profileDescription.textContent
         );
+        clearValidation(popupProfileForm, {
+            inputSelector: '.popup__input',
+            submitButtonSelector: '.popup__button',
+            inactiveButtonClass: 'popup__button_disabled',
+            inputErrorClass: 'popup__input_type_error',
+            errorClass: 'popup__error_visible'
+          })
         openModal(popupProfile);
     }
 );
@@ -110,6 +122,13 @@ buttonOpenPopupNewPlace.addEventListener(
     'click',
     () => { 
         clearPopupNewPlaceForm(popupNewPlaceFormName, popupNewPlaceFormImage);
+        clearValidation(popupNewPlaceForm, {
+            inputSelector: '.popup__input',
+            submitButtonSelector: '.popup__button',
+            inactiveButtonClass: 'popup__button_disabled',
+            inputErrorClass: 'popup__input_type_error',
+            errorClass: 'popup__error_visible'
+          })
         openModal(popupNewPlace);
     }
 );
@@ -119,3 +138,13 @@ popups.forEach(function(popup) {
 
     popup.addEventListener('click', (evt) => closeModalByOverlayAndCloseButton(evt, popup))
 });
+
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });
