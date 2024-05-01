@@ -10,6 +10,7 @@ const handleResponse = (res) => {
     if (res.ok) {
         return res.json();
     }
+    return Promise.reject(`Что-то пошло не так: ${res.status}`);
 }
 
 export const getRequest = (url, config) => {
@@ -19,6 +20,22 @@ export const getRequest = (url, config) => {
     })
     .then(handleResponse)
 }
+
+//удалить, если не буду делать проверки
+export const headRequest = (url) => {
+    return fetch(url, {
+        method: 'HEAD',
+        // headers: config.headers,
+    })
+    .then(headersData)
+}
+
+const headersData = (res) => {
+    if (res.headers.get('Content-Type').contains('application/json')) {
+        return res.json();
+    }
+}
+//end
 
 export const putRequest = (url, config) => {
     return fetch(url, {

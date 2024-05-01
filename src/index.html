@@ -41,7 +41,7 @@
         <span class="profile-name-input-error popup__input-error"></span>
         <input type="text" name="description" id="profile-description-input" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" pattern="[a-zA-Zа-яА-Я\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="profile-description-input-error popup__input-error"></span>
-        <button type="submit" class="button popup__button">Сохранить</button>
+        <button type="submit" class="button popup__button"></button>
       </form>
     </div>
   </div>
@@ -54,18 +54,18 @@
         <span class="place-name-input-error popup__input-error"></span>
         <input type="url" name="link" id="place-link-input" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" data-error-message="Некорректная ссылка" required>
         <span class="place-link-input-error popup__input-error"></span>
-        <button type="submit" class="button popup__button">Cоздать</button>
+        <button type="submit" class="button popup__button"></button>
       </form>
     </div>
   </div>
   <div class="popup popup_type_new-avatar">
-    <div class="popup__content">
+    <div class="popup__content popup__content_edit_avatar">
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Обновить аватар</h3>
       <form class="popup__form" name="new-avatar" novalidate>
-        <input type="url" name="link" id="new-avatar-input" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" data-error-message="Некорректная ссылка" required>
-        <span class="place-link-input-error popup__input-error"></span>
-        <button type="submit" class="button popup__button">Сохранить</button>
+        <input type="url" name="link" id="new-avatar-input" class="popup__input popup__input_type_avatar_url" placeholder="Ссылка на картинку" data-error-message="Некорректная ссылка" required>
+        <span class="new-avatar-input-error popup__input-error"></span>
+        <button type="submit" class="button popup__button"></button>
       </form>
     </div>
   </div>

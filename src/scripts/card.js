@@ -9,6 +9,9 @@ const cardTemplate = document.querySelector('#card-template').content;
 function deleteCard(card, cardId) {
     card.remove();
     deleteRequest(`${config.baseUrl}/cards/${cardId}`, config)
+    .catch((err) => {
+        console.log(err); 
+    }); 
 }
 
 function createCard(link, name, likes, createPopupLargeCard, addCardLike, cardId, profileId, cardOwnerProfile, handleConfirmPopupDelete, popupFormDelete, popupDelete, description = 'красивая фотография') {
@@ -61,15 +64,18 @@ function addCardLike(evt, cardId, likeCounter) {
         putRequest(`${config.baseUrl}/cards/likes/${cardId}`, config)
             .then((data) => {
                 likeCounter.textContent = data.likes.length
-            }) 
+            }).catch((err) => {
+                console.log(err); 
+            }); 
     } else {
         deleteRequest(`${config.baseUrl}/cards/likes/${cardId}`, config)
             .then((data) => {
                 likeCounter.textContent = data.likes.length
-            })
+            }).catch((err) => {
+                console.log(err); 
+            }); 
     }
 }
-
 
 export { 
     createCard, 

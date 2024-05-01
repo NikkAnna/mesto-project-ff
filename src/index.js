@@ -18,7 +18,7 @@ import {
     getRequest,
     postRequest,
     patchRequest,
-    deleteRequest
+    headRequest
 } from './scripts/api.js'
 
 const popups = document.querySelectorAll('.popup');
@@ -26,19 +26,26 @@ const placesList = document.querySelector('.places__list');
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+
 const profileAvatar = document.querySelector('.profile__image')
+const popupAvatarEdit = document.querySelector('.popup_type_new-avatar')
+const popupFormAvatarEdit = document.forms['new-avatar'];
+const popupFormAvatarEditLink = document.querySelector('.popup__input_type_avatar_url');
+const buttonSaveNewAvatar = popupAvatarEdit.querySelector('.popup__button')
 
 const popupProfile = document.querySelector('.popup_type_edit');
 const buttonOpenPopupProfile = document.querySelector('.profile__edit-button');
 const popupProfileForm = document.forms['edit-profile'];
 const popupProfileFormName = document.querySelector('.popup__input_type_name');
 const popupProfileFormDescription = document.querySelector('.popup__input_type_description');
+const buttonSavePopupProfile = popupProfile.querySelector('.popup__button');
 
 const popupNewPlace = document.querySelector('.popup_type_new-card');
 const buttonOpenPopupNewPlace = document.querySelector('.profile__add-button');
 const popupNewPlaceForm = document.forms['new-place'];
 const popupNewPlaceFormName = document.querySelector('.popup__input_type_card-name');
 const popupNewPlaceFormImage = document.querySelector('.popup__input_type_url');
+const buttonSaveNewPlace = popupNewPlace.querySelector('.popup__button')
 
 const popupLargeCard = document.querySelector('.popup_type_image');
 const popupLargeCardImage = popupLargeCard.querySelector('.popup__image');
@@ -49,6 +56,7 @@ const popupDeleteCard = document.querySelector('.popup_type_delete-card')
 
 const urlMyProfile = config.baseUrl + '/users/me';
 const urlCards = config.baseUrl + '/cards';
+const urlMyAvatar = config.baseUrl + '/users/me/avatar';
 
 
 function addCard(card) {
@@ -65,6 +73,38 @@ function handleUpdateProfile(evt, popup, title, description, profileTitle, profi
         name: profileTitle.textContent,
         about: profileDescription.textContent,
     })
+    .catch((err) => {
+        console.log(err);
+    }); 
+
+    closeModal(popup);
+}
+
+function handleUpdateAvatar(evt, popup, urlMyAvatar, config, avatarLink, profileAvatar) {
+    evt.preventDefault();
+
+    patchRequest(urlMyAvatar, config, {
+        avatar: avatarLink,
+    })
+    .then((data) => {
+        profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+     })
+    .catch((err) => {
+        console.log(err);
+    });
+
+    // Promise.all([
+    //     patchRequest(urlMyAvatar, config, {
+    //         avatar: avatarLink,
+    //     }),
+    //     headRequest(avatarLink, config)
+    // ])
+    // .then(([avatar, data]) => {
+    //     console.log([avatar, data.headers])
+    // })
+    // .catch((err) => {
+    //     console.log(err);
+    // });
 
     closeModal(popup);
 }
@@ -72,11 +112,16 @@ function handleUpdateProfile(evt, popup, title, description, profileTitle, profi
 function updatePopupProfileForm(popupFormName, popupFormDescription, profileTitle, profileDescription) {
     popupFormName.value = profileTitle;
     popupFormDescription.value = profileDescription;
+    buttonSavePopupProfile.textContent = 'Сохранить'
 }
 
 function clearPopupNewPlaceForm(placeName, placeImage) {
     placeName.value = '';
     placeImage.value = '';
+}
+
+function clearPopupAvatarForm(link) {
+    link.value = '';
 }
 
 function handleOpenPopupNewPlace(evt, popup, placeImage, placeName, createPopupLargeCard, addCardLike, placesList, profile, handleConfirmPopupDelete, popupFormDelete, popupDelete) {
@@ -90,7 +135,9 @@ function handleOpenPopupNewPlace(evt, popup, placeImage, placeName, createPopupL
         placesList.prepend(card);
         closeModal(popup);
         clearPopupNewPlaceForm(placeName, placeImage);
-    })
+    }).catch((err) => {
+        console.log(err);
+    }); 
 }
 
 function createPopupLargeCard(link, name, description) {
@@ -112,6 +159,10 @@ function handleConfirmPopupDelete(popupFormDelete, cardId, cardElement, popupDel
     openModal(popupDelete);
 }
 
+function openPopupAvatarEditForm(popup) {
+    openModal(popup)
+}
+
 Promise.all([
     getRequest(urlMyProfile, config),
     getRequest(urlCards, config)
@@ -122,15 +173,41 @@ Promise.all([
     
     popupNewPlaceForm.addEventListener(
         'submit', 
-        (evt) => handleOpenPopupNewPlace(
+        (evt) => {
+            handleOpenPopupNewPlace(
             evt, popupNewPlace, popupNewPlaceFormImage, popupNewPlaceFormName, createPopupLargeCard, addCardLike, placesList, profileData, handleConfirmPopupDelete, popupFormDeleteCard, popupDeleteCard 
-        )
-    );
+            )
+            buttonSaveNewPlace.textContent = 'Создание...';
+    });
 
     cardsData.forEach((card) => {
         const cardItem = createCard(card.link, card.name, card.likes, createPopupLargeCard, addCardLike, card._id, profileData._id, card.owner, handleConfirmPopupDelete, popupFormDeleteCard, popupDeleteCard)
         addCard(cardItem);
     })
+}).catch((err) => {
+    console.log(err);
+}); 
+
+profileAvatar.addEventListener('click', () => {
+    clearPopupAvatarForm(popupFormAvatarEditLink);
+    clearValidation(popupFormAvatarEdit, {
+        inputSelector: '.popup__input',
+        submitButtonSelector: '.popup__button',
+        inactiveButtonClass: 'popup__button_disabled',
+        inputErrorClass: 'popup__input_type_error',
+        errorClass: 'popup__error_visible'
+    });
+    buttonSaveNewAvatar.textContent = 'Сохранить';
+    openPopupAvatarEditForm(popupAvatarEdit);
+})
+
+popupFormAvatarEdit.addEventListener(
+    'submit', 
+    (evt) => {
+        handleUpdateAvatar(
+        evt, popupAvatarEdit, urlMyAvatar, config, popupFormAvatarEditLink.value, profileAvatar
+        )
+        buttonSaveNewAvatar.textContent = 'Сохранение...';
 })
 
 buttonOpenPopupProfile.addEventListener(
@@ -150,11 +227,15 @@ buttonOpenPopupProfile.addEventListener(
     }
 );
 
+
 popupProfileForm.addEventListener(
     'submit',
-    (evt) => handleUpdateProfile(
+    (evt) => {
+        handleUpdateProfile(
         evt, popupProfile, popupProfileFormName.value, popupProfileFormDescription.value, profileTitle, profileDescription
-    )
+        )
+        buttonSavePopupProfile.textContent = 'Сохранение...'
+    }
 );
 
 buttonOpenPopupNewPlace.addEventListener(
@@ -168,6 +249,7 @@ buttonOpenPopupNewPlace.addEventListener(
             inputErrorClass: 'popup__input_type_error',
             errorClass: 'popup__error_visible'
           })
+        buttonSaveNewPlace.textContent = 'Создать';
         openModal(popupNewPlace);
     }
 );
