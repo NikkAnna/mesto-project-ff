@@ -1,7 +1,4 @@
 import './pages/index.css';
-// import { 
-//     initialCards 
-// } from './scripts/cards.js';
 import { 
     createCard, 
     deleteCard, 
@@ -20,7 +17,8 @@ import {
     config,
     getRequest,
     postRequest,
-    patchRequest
+    patchRequest,
+    deleteRequest
 } from './scripts/api.js'
 
 const popups = document.querySelectorAll('.popup');
@@ -45,6 +43,9 @@ const popupNewPlaceFormImage = document.querySelector('.popup__input_type_url');
 const popupLargeCard = document.querySelector('.popup_type_image');
 const popupLargeCardImage = popupLargeCard.querySelector('.popup__image');
 const popupLargeCardText = popupLargeCard.querySelector('.popup__caption');
+
+const popupFormDeleteCard = document.forms['delete-form'];
+const popupDeleteCard = document.querySelector('.popup_type_delete-card')
 
 const urlMyProfile = config.baseUrl + '/users/me';
 const urlCards = config.baseUrl + '/cards';
@@ -78,23 +79,18 @@ function clearPopupNewPlaceForm(placeName, placeImage) {
     placeImage.value = '';
 }
 
-function handleOpenPopupNewPlace(evt, popup, placeImage, placeName, deleteCard, createPopupImage, addCardLike, placesList) {
+function handleOpenPopupNewPlace(evt, popup, placeImage, placeName, createPopupLargeCard, addCardLike, placesList, profile, handleConfirmPopupDelete, popupFormDelete, popupDelete) {
     evt.preventDefault();
   
-    const card = createCard(placeImage.value, placeName.value, deleteCard, createPopupImage, addCardLike);
-
     postRequest(urlCards, config, {
         name: placeName.value,
         link: placeImage.value,
     }).then((data) => {
-        console.log(data)
+        const card = createCard(placeImage.value, placeName.value, [], createPopupLargeCard, addCardLike, data._id, profile._id, profile, handleConfirmPopupDelete, popupFormDelete, popupDelete);
+        placesList.prepend(card);
+        closeModal(popup);
+        clearPopupNewPlaceForm(placeName, placeImage);
     })
-
-    placesList.prepend(card);
-  
-    closeModal(popup);
-  
-    clearPopupNewPlaceForm(placeName, placeImage);
 }
 
 function createPopupLargeCard(link, name, description) {
@@ -105,33 +101,37 @@ function createPopupLargeCard(link, name, description) {
     openModal(popupLargeCard);
 }
 
-// initialCards.forEach(function(item) {
-//     const card = createCard(item.link, item.name, deleteCard, createPopupLargeCard, addCardLike, item.description);
-//     addCard(card);
-// });
+function handleConfirmPopupDelete(popupFormDelete, cardId, cardElement, popupDelete) {
+    popupFormDelete.addEventListener('submit', (evt) => {
+        evt.preventDefault();
+        deleteCard(cardElement, cardId)
+
+        closeModal(popupDelete)
+    })
+
+    openModal(popupDelete);
+}
 
 Promise.all([
     getRequest(urlMyProfile, config),
     getRequest(urlCards, config)
 ]).then(([profileData, cardsData]) => {
-    // console.log({profileData, cardsData})
     profileTitle.textContent = profileData.name;
     profileDescription.textContent = profileData.about;
     profileAvatar.style.backgroundImage = `url(${profileData.avatar})`;
+    
+    popupNewPlaceForm.addEventListener(
+        'submit', 
+        (evt) => handleOpenPopupNewPlace(
+            evt, popupNewPlace, popupNewPlaceFormImage, popupNewPlaceFormName, createPopupLargeCard, addCardLike, placesList, profileData, handleConfirmPopupDelete, popupFormDeleteCard, popupDeleteCard 
+        )
+    );
 
     cardsData.forEach((card) => {
-        const cardItem = createCard(card.link, card.name, deleteCard, createPopupLargeCard, addCardLike)
+        const cardItem = createCard(card.link, card.name, card.likes, createPopupLargeCard, addCardLike, card._id, profileData._id, card.owner, handleConfirmPopupDelete, popupFormDeleteCard, popupDeleteCard)
         addCard(cardItem);
     })
 })
-
-
-popupNewPlaceForm.addEventListener(
-    'submit', 
-    (evt) => handleOpenPopupNewPlace(
-        evt, popupNewPlace, popupNewPlaceFormImage, popupNewPlaceFormName, deleteCard, createPopupLargeCard, addCardLike, placesList
-    )
-);
 
 buttonOpenPopupProfile.addEventListener(
     'click',
@@ -188,13 +188,5 @@ enableValidation({
 });
 
 
-
-
-// getRequest(urlMyProfile, config)
-// .then((data) => {
-//     profileTitle.textContent = data.name;
-//     profileDescription.textContent = data.about;
-//     profileAvatar.style.backgroundImage = `url(${data.avatar})`;
-// })
 
 

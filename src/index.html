@@ -54,6 +54,17 @@
         <span class="place-name-input-error popup__input-error"></span>
         <input type="url" name="link" id="place-link-input" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" data-error-message="Некорректная ссылка" required>
         <span class="place-link-input-error popup__input-error"></span>
+        <button type="submit" class="button popup__button">Cоздать</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_type_new-avatar">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form" name="new-avatar" novalidate>
+        <input type="url" name="link" id="new-avatar-input" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" data-error-message="Некорректная ссылка" required>
+        <span class="place-link-input-error popup__input-error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
@@ -66,6 +77,15 @@
     </div>
   </div>
 </div>
+<div class="popup popup_type_delete-card">
+  <div class="popup__content popup__content_delete">
+    <button type="button" class="popup__close"></button>
+    <h3 class="popup__title">Вы уверены?</h3>
+    <form class="popup__form popup__form-delete" name="delete-form" novalidate>
+      <button type="submit" class="button popup__button popup__button_delete">Да</button>
+    </form>      
+    </div>
+</div>
 
 
 <template id="card-template">
@@ -75,8 +95,11 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
-    </div>
+      <div class="card__like-section">
+        <button type="button" class="card__like-button"></button>
+        <p class="card__like-counter"></p>
+      </div>
+      </div>
   </li>
 </template>
 </body>

@@ -20,6 +20,22 @@ export const getRequest = (url, config) => {
     .then(handleResponse)
 }
 
+export const putRequest = (url, config) => {
+    return fetch(url, {
+        method: 'PUT',
+        headers: config.headers,
+    })
+    .then(handleResponse)
+}
+
+export const deleteRequest = (url, config) => {
+    return fetch(url, {
+        method: 'DELETE',
+        headers: config.headers,
+    })
+    .then(handleResponse)
+}
+
 export const postRequest = (url, config, data) => {
     return fetch(url, {
         method: 'POST',

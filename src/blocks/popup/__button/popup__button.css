@@ -19,6 +19,9 @@
   cursor: pointer;
 }
 
+.popup__button_delete {
+  margin: 38px 0 0;
+}
 
 .popup__button_disabled {
   background: #f6f6f6;
