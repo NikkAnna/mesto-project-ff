@@ -1,7 +1,7 @@
 
 function showInputError(form, inputField, inputErrorClass, errorClass) {
     const formError = form.querySelector(`.${inputField.id}-error`);
-    
+
     inputField.classList.add(inputErrorClass);
     formError.textContent = inputField.validationMessage;
     formError.classList.add(errorClass);
@@ -22,14 +22,13 @@ function validateInputField(form, inputField, inputErrorClass, errorClass) {
     } else {
         inputField.setCustomValidity('');
     }
-    
-    
+
     if (!inputField.validity.valid) {
         showInputError(form, inputField, inputErrorClass, errorClass);
     } else {
         removeInputError(form, inputField, inputErrorClass, errorClass);
     }
-};
+}
 
 function setEventListeners(form, validationConfig) {
     const inputFields = Array.from(form.querySelectorAll(validationConfig.inputSelector));
@@ -54,7 +53,7 @@ export function enableValidation(validationConfig) {
     forms.forEach((form) => {
         setEventListeners(form, validationConfig);
     })
-    
+
 }
 
 function checkInvalidInput(inputFields) {
@@ -78,7 +77,7 @@ export function clearValidation(form, validationConfig) {
     const inputErrorClass = validationConfig.inputErrorClass;
     const errorClass = validationConfig.errorClass;
     const formButton = form.querySelector(validationConfig.submitButtonSelector);
-    
+
     inputFields.forEach((inputField) => {
         removeInputError(form, inputField, inputErrorClass, errorClass)
     })

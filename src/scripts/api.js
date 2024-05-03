@@ -5,7 +5,7 @@ export const config = {
         'Content-Type': 'application/json'
     }
 }
-  
+
 const handleResponse = (res) => {
     if (res.ok) {
         return res.json();
@@ -13,60 +13,72 @@ const handleResponse = (res) => {
     return Promise.reject(`Что-то пошло не так: ${res.status}`);
 }
 
-export const getRequest = (url, config) => {
-    return fetch(url, {
-        method: 'GET',
-        headers: config.headers,
-    })
-    .then(handleResponse)
-}
-
-//удалить, если не буду делать проверки
-export const headRequest = (url) => {
-    return fetch(url, {
-        method: 'HEAD',
-        // headers: config.headers,
-    })
-    .then(headersData)
-}
-
-const headersData = (res) => {
-    if (res.headers.get('Content-Type').contains('application/json')) {
-        return res.json();
-    }
-}
-//end
-
-export const putRequest = (url, config) => {
-    return fetch(url, {
-        method: 'PUT',
-        headers: config.headers,
-    })
-    .then(handleResponse)
-}
-
-export const deleteRequest = (url, config) => {
+export const deletePlaceRequest = (url, config) => {
     return fetch(url, {
         method: 'DELETE',
         headers: config.headers,
     })
-    .then(handleResponse)
+        .then(handleResponse)
 }
 
-export const postRequest = (url, config, data) => {
+export const addPlaceLikeRequest = (url, config) => {
     return fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: config.headers,
-        body: JSON.stringify(data),
     })
-    .then(handleResponse)
+        .then(handleResponse)
 }
 
-export const patchRequest = (url, config, data) => {
+export const removePlaceLikeRequest = (url, config) => {
+    return fetch(url, {
+        method: 'DELETE',
+        headers: config.headers,
+    })
+        .then(handleResponse)
+}
+
+export const updateProfileRequest = (url, config, profile) => {
     return fetch(url, {
         method: 'PATCH',
         headers: config.headers,
-        body: JSON.stringify(data),
+        body: JSON.stringify(profile),
     })
-    .then(handleResponse)
+        .then(handleResponse)
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+export const updateAvatarRequest = (url, config, avatarLink) => {
+    return fetch(url, {
+        method: 'PATCH',
+        headers: config.headers,
+        body: JSON.stringify({ avatar: avatarLink }),
+    })
+        .then(handleResponse)
+}
+
+export const createPlaceRequest = (url, config, place) => {
+    return fetch(url, {
+        method: 'POST',
+        headers: config.headers,
+        body: JSON.stringify(place),
+    })
+        .then(handleResponse)
+}
+
+export const getProfileRequest = (url, config) => {
+    return fetch(url, {
+        method: 'GET',
+        headers: config.headers,
+    })
+        .then(handleResponse)
+}
+
+export const getPlacesRequest = (url, config) => {
+    return fetch(url, {
+        method: 'GET',
+        headers: config.headers,
+    })
+        .then(handleResponse)
 }

@@ -1,22 +1,21 @@
 import {
     config,
-    putRequest,
-    deleteRequest
+    deletePlaceRequest,
 } from './api.js';
 
 const cardTemplate = document.querySelector('#card-template').content;
 
-function deleteCard(card, cardId) {
-    card.remove();
-    deleteRequest(`${config.baseUrl}/cards/${cardId}`, config)
-    .catch((err) => {
-        console.log(err); 
-    }); 
+function deletePlaceCard(card, cardId) {
+    deletePlaceRequest(`${config.baseUrl}/cards/${cardId}`, config)
+        .then((data) => card.remove())
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
-function createCard(link, name, likes, createPopupLargeCard, addCardLike, cardId, profileId, cardOwnerProfile, handleConfirmPopupDelete, popupFormDelete, popupDelete, description = 'красивая фотография') {
+function createPlaceCard(link, name, likes, createPopupLargeCard, handlePlaceCardLike, cardId, profileId, cardOwnerProfile, handleConfirmPopupDelete, popupFormDelete, popupDelete, description = 'красивая фотография') {
     const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
-  
+
     const cardImage = cardElement.querySelector('.card__image');
     cardImage.src = link;
     cardImage.alt = description;
@@ -24,15 +23,15 @@ function createCard(link, name, likes, createPopupLargeCard, addCardLike, cardId
     cardElement.querySelector('.card__title').textContent = name;
 
     cardImage.addEventListener('click', () => createPopupLargeCard(link, name, description));
-    
+
     const likesAmount = likes.length;
     const likeCounter = cardElement.querySelector('.card__like-counter');
-    
+
     likeCounter.textContent = likesAmount;
 
     const likebutton = cardElement.querySelector('.card__like-button');
     likebutton.addEventListener('click', (evt) => {
-        addCardLike(evt, cardId, likeCounter)
+        handlePlaceCardLike(evt, cardId, likeCounter)
     });
 
     const myLikeIsOnCard = likes.some((like) => {
@@ -56,31 +55,9 @@ function createCard(link, name, likes, createPopupLargeCard, addCardLike, cardId
     return cardElement;
 }
 
-function addCardLike(evt, cardId, likeCounter) {
-
-    evt.target.classList.toggle('card__like-button_is-active');
-
-    if (evt.target.classList.contains('card__like-button_is-active')) {
-        putRequest(`${config.baseUrl}/cards/likes/${cardId}`, config)
-            .then((data) => {
-                likeCounter.textContent = data.likes.length
-            }).catch((err) => {
-                console.log(err); 
-            }); 
-    } else {
-        deleteRequest(`${config.baseUrl}/cards/likes/${cardId}`, config)
-            .then((data) => {
-                likeCounter.textContent = data.likes.length
-            }).catch((err) => {
-                console.log(err); 
-            }); 
-    }
-}
-
-export { 
-    createCard, 
-    deleteCard, 
-    addCardLike, 
+export {
+    createPlaceCard,
+    deletePlaceCard,
     cardTemplate
 }
 
