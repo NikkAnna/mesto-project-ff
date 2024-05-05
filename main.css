@@ -22,7 +22,7 @@
 .card__image{height:282px;-o-object-fit:cover;object-fit:cover;width:100%}.card__image:hover{cursor:pointer}
 .card__like-button{background:transparent url(df0c965524717a3fd8e9.svg) no-repeat;background-size:21px 18px;border:none;cursor:pointer;flex:1 0 auto;height:18px;margin:0;padding:0;transition:.3s;width:21px}.card__like-button:hover{opacity:.6}
 .card__like-button_is-active{background:transparent url(a7ffe37dcb927ba0c46c.svg) no-repeat}
-.card__delete-button{background:transparent url(2af49b82d305a6ea3442.svg) 50% no-repeat;background-size:18px 18px;border:none;cursor:pointer;height:18px;margin:0;padding:0;position:absolute;right:15px;top:18px;transition:.3s;width:18px}.card__delete-button:hover{opacity:.6}
+.card__delete-button{background:transparent url(2af49b82d305a6ea3442.svg) 50% no-repeat;background-size:18px 18px;border:none;cursor:pointer;height:18px;margin:0;padding:0;position:absolute;right:15px;top:18px;transition:.3s;width:18px}.card__delete-button:hover{opacity:.6}.card__delete-button_inactive{display:none}
 .card__title{font-size:24px;line-height:29px;margin:0;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .card__like-section{align-items:center;display:flex;flex-direction:column;gap:3px}
 .card__like-counter{font-size:13px;margin:0;transition:.3s}
