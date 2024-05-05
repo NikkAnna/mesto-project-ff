@@ -13,44 +13,41 @@ const handleResponse = (res) => {
     return Promise.reject(`Что-то пошло не так: ${res.status}`);
 }
 
-export const deletePlaceRequest = (url, config) => {
-    return fetch(url, {
+export const deletePlaceRequest = (placeCardId) => {
+    return fetch(`${config.baseUrl}/cards/${placeCardId}`, {
         method: 'DELETE',
         headers: config.headers,
     })
         .then(handleResponse)
 }
 
-export const addPlaceLikeRequest = (url, config) => {
-    return fetch(url, {
+export const addPlaceLikeRequest = (placeCardId) => {
+    return fetch(`${config.baseUrl}/cards/likes/${placeCardId}`, {
         method: 'PUT',
         headers: config.headers,
     })
         .then(handleResponse)
 }
 
-export const removePlaceLikeRequest = (url, config) => {
-    return fetch(url, {
+export const removePlaceLikeRequest = (placeCardId) => {
+    return fetch(`${config.baseUrl}/cards/likes/${placeCardId}`, {
         method: 'DELETE',
         headers: config.headers,
     })
         .then(handleResponse)
 }
 
-export const updateProfileRequest = (url, config, profile) => {
-    return fetch(url, {
+export const updateProfileRequest = (profile) => {
+    return fetch(`${config.baseUrl}/users/me`, {
         method: 'PATCH',
         headers: config.headers,
         body: JSON.stringify(profile),
     })
         .then(handleResponse)
-        .catch((err) => {
-            console.log(err);
-        });
 }
 
-export const updateAvatarRequest = (url, config, avatarLink) => {
-    return fetch(url, {
+export const updateAvatarRequest = (avatarLink) => {
+    return fetch(`${config.baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         headers: config.headers,
         body: JSON.stringify({ avatar: avatarLink }),
@@ -58,8 +55,8 @@ export const updateAvatarRequest = (url, config, avatarLink) => {
         .then(handleResponse)
 }
 
-export const createPlaceRequest = (url, config, place) => {
-    return fetch(url, {
+export const createPlaceRequest = (place) => {
+    return fetch(`${config.baseUrl}/cards`, {
         method: 'POST',
         headers: config.headers,
         body: JSON.stringify(place),
@@ -67,16 +64,16 @@ export const createPlaceRequest = (url, config, place) => {
         .then(handleResponse)
 }
 
-export const getProfileRequest = (url, config) => {
-    return fetch(url, {
+export const getProfileRequest = () => {
+    return fetch(`${config.baseUrl}/users/me`, {
         method: 'GET',
         headers: config.headers,
     })
         .then(handleResponse)
 }
 
-export const getPlacesRequest = (url, config) => {
-    return fetch(url, {
+export const getPlacesRequest = () => {
+    return fetch(`${config.baseUrl}/cards`, {
         method: 'GET',
         headers: config.headers,
     })

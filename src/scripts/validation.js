@@ -62,13 +62,21 @@ function checkInvalidInput(inputFields) {
     })
 }
 
+function addInactiveButtonClass(formButton, inactiveButtonClass) {
+    formButton.disabled = true;
+    formButton.classList.add(inactiveButtonClass)
+}
+
+function removeInactiveButtonClass(formButton, inactiveButtonClass) {
+    formButton.disabled = false;
+    formButton.classList.remove(inactiveButtonClass)
+}
+
 function toggleFormButtonStatus(inputFields, formButton, inactiveButtonClass) {
     if (checkInvalidInput(inputFields)) {
-        formButton.disabled = true;
-        formButton.classList.add(inactiveButtonClass)
+        addInactiveButtonClass(formButton, inactiveButtonClass);
     } else {
-        formButton.disabled = false;
-        formButton.classList.remove(inactiveButtonClass)
+        removeInactiveButtonClass(formButton, inactiveButtonClass);
     }
 }
 
@@ -82,6 +90,6 @@ export function clearValidation(form, validationConfig) {
         removeInputError(form, inputField, inputErrorClass, errorClass)
     })
 
-    formButton.disabled = true;
-    formButton.classList.add(validationConfig.inactiveButtonClass);
+    addInactiveButtonClass(formButton, validationConfig.inactiveButtonClass)
 }
+
