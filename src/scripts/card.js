@@ -12,7 +12,7 @@ export function deletePlaceCard(card, cardId) {
         });
 }
 
-export function createPlaceCard(place, selfProfileId, createPopupLargeCard, handlePlaceCardLike, handleOpenPopupDelete, popupDelete) {
+export function createPlaceCard(place, selfProfileId, createPopupLargeCard, handleTogglePlaceCardLike, handleOpenPopupDelete, popupDelete) {
     const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
 
     const cardImage = cardElement.querySelector('.card__image');
@@ -28,9 +28,9 @@ export function createPlaceCard(place, selfProfileId, createPopupLargeCard, hand
 
     likeCounter.textContent = likesAmount;
 
-    const likebutton = cardElement.querySelector('.card__like-button');
-    likebutton.addEventListener('click', (evt) => {
-        handlePlaceCardLike(evt, place._id, likeCounter)
+    const likeButton = cardElement.querySelector('.card__like-button');
+    likeButton.addEventListener('click', (evt) => {
+        handleTogglePlaceCardLike(evt, place._id, likeCounter)
     });
 
     const myLikeIsOnCard = place.likes.some((like) => {
@@ -38,9 +38,9 @@ export function createPlaceCard(place, selfProfileId, createPopupLargeCard, hand
     })
 
     if (myLikeIsOnCard) {
-        likebutton.classList.add('card__like-button_is-active');
+        addPlaceCardLike(likeButton);
     } else {
-        likebutton.classList.remove('card__like-button_is-active');
+        removePlaceCardLike(likeButton);
     };
 
     const deleteButton = cardElement.querySelector('.card__delete-button');
@@ -57,8 +57,12 @@ export function createPlaceCard(place, selfProfileId, createPopupLargeCard, hand
     return cardElement;
 }
 
-export function addPlaceCardLike(evt) {
-    evt.target.classList.toggle('card__like-button_is-active');
+export function addPlaceCardLike(likeButton) {
+    likeButton.classList.add('card__like-button_is-active');
+}
+
+export function removePlaceCardLike(likeButton) {
+    likeButton.classList.remove('card__like-button_is-active');
 }
 
 export function countPlaceCardLikes(likeCounter, data) {

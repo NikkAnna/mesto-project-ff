@@ -3,6 +3,7 @@ import {
     createPlaceCard,
     deletePlaceCard,
     addPlaceCardLike,
+    removePlaceCardLike,
     countPlaceCardLikes
 } from './scripts/card.js';
 import {
@@ -71,25 +72,26 @@ function addPlaceCard(placeCard) {
     placesCards.append(placeCard);
 }
 
-function handlePlaceCardLike(evt, placeCardId, likeCounter) {
-
-    addPlaceCardLike(evt);
+function handleTogglePlaceCardLike(evt, placeCardId, likeCounter) {
 
     if (evt.target.classList.contains('card__like-button_is-active')) {
-        addPlaceLikeRequest(placeCardId)
-            .then((data) => {
-                countPlaceCardLikes(likeCounter, data)
-            }).catch((err) => {
-                console.log(err);
-            });
-    } else {
         removePlaceLikeRequest(placeCardId)
             .then((data) => {
                 countPlaceCardLikes(likeCounter, data)
+                removePlaceCardLike(evt.target);
+            }).catch((err) => {
+                console.log(err);
+        });
+
+    } else {
+        addPlaceLikeRequest(placeCardId)
+            .then((data) => {
+                countPlaceCardLikes(likeCounter, data)
+                addPlaceCardLike(evt.target);
             }).catch((err) => {
                 console.log(err);
             });
-    }
+    };
 }
 
 function updatePopupProfileForm(popupFormName, popupFormDescription, profileTitle, profileDescription) {
@@ -147,14 +149,14 @@ function clearPopupCreatePlaceForm(placeName, placeImage) {
     placeImage.value = '';
 }
 
-function handleOpenPopupCreatePlace(evt, popup, placeImage, placeName, createPopupLargeCard, handlePlaceCardLike, placesCards, profile, handleOpenPopupDelete, popupDelete) {
+function handleOpenPopupCreatePlace(evt, popup, placeImage, placeName, createPopupLargeCard, handleTogglePlaceCardLike, placesCards, profile, handleOpenPopupDelete, popupDelete) {
     evt.preventDefault();
 
     createPlaceRequest({
         name: placeName.value,
         link: placeImage.value,
     }).then((place) => {
-        const card = createPlaceCard(place, profile._id, createPopupLargeCard, handlePlaceCardLike, handleOpenPopupDelete, popupDelete);
+        const card = createPlaceCard(place, profile._id, createPopupLargeCard, handleTogglePlaceCardLike, handleOpenPopupDelete, popupDelete);
         placesCards.prepend(card);
         closeModal(popup);
     }).catch((err) => {
@@ -196,7 +198,7 @@ Promise.all([
     profileAvatar.style.backgroundImage = `url(${profile.avatar})`;
 
     placesData.forEach((place) => {
-        const placeCard = createPlaceCard(place, profile._id, createPopupLargePlaceCard, handlePlaceCardLike, handleOpenPopupDelete, popupDeletePlaceCard)
+        const placeCard = createPlaceCard(place, profile._id, createPopupLargePlaceCard, handleTogglePlaceCardLike, handleOpenPopupDelete, popupDeletePlaceCard)
         addPlaceCard(placeCard);
     })
 }).catch((err) => {
@@ -211,7 +213,7 @@ popupCreatePlaceForm.addEventListener(
     'submit',
     (evt) => {
         handleOpenPopupCreatePlace(
-            evt, popupCreatePlace, popupCreatePlaceFormImage, popupCreatePlaceFormName, createPopupLargePlaceCard, handlePlaceCardLike, placesCards, selfProfile, handleOpenPopupDelete, popupDeletePlaceCard
+            evt, popupCreatePlace, popupCreatePlaceFormImage, popupCreatePlaceFormName, createPopupLargePlaceCard, handleTogglePlaceCardLike, placesCards, selfProfile, handleOpenPopupDelete, popupDeletePlaceCard
         );
         buttonCreatePlace.textContent = 'Создание...';
     });
