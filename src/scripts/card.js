@@ -19,7 +19,7 @@ export function createPlaceCard(place, selfProfileId, createPopupLargeCard, hand
     cardImage.src = place.link;
 
     cardElement.querySelector('.card__title').textContent = place.name;
-    cardImage.alt = cardElement.querySelector('.card__title').textContent;
+    cardImage.alt = place.name;
 
     cardImage.addEventListener('click', () => createPopupLargeCard(place.link, place.name));
 
@@ -67,4 +67,12 @@ export function removePlaceCardLike(likeButton) {
 
 export function countPlaceCardLikes(likeCounter, data) {
     likeCounter.textContent = data.likes.length
+}
+
+export function cardPlaceLikeStatus(likeButton) {
+    if (likeButton.classList.contains('card__like-button_is-active')) {
+        return true;
+    } else {
+        return false;
+    }
 }

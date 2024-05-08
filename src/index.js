@@ -4,7 +4,8 @@ import {
     deletePlaceCard,
     addPlaceCardLike,
     removePlaceCardLike,
-    countPlaceCardLikes
+    countPlaceCardLikes,
+    cardPlaceLikeStatus
 } from './scripts/card.js';
 import {
     openModal,
@@ -74,7 +75,7 @@ function addPlaceCard(placeCard) {
 
 function handleTogglePlaceCardLike(evt, placeCardId, likeCounter) {
 
-    if (evt.target.classList.contains('card__like-button_is-active')) {
+    if (cardPlaceLikeStatus(evt.target)) {
         removePlaceLikeRequest(placeCardId)
             .then((data) => {
                 countPlaceCardLikes(likeCounter, data)
@@ -101,6 +102,7 @@ function updatePopupProfileForm(popupFormName, popupFormDescription, profileTitl
 
 function handleUpdateProfile(evt, popup, title, description, profileTitle, profileDescription) {
     evt.preventDefault();
+    buttonUpdatePopupProfile.textContent = 'Сохранение...';
 
     updateProfileRequest({
         name: title.value,
@@ -121,6 +123,7 @@ function handleUpdateProfile(evt, popup, title, description, profileTitle, profi
 
 function handleUpdateAvatar(evt, popup, avatarLink, profileAvatar) {
     evt.preventDefault();
+    buttonChangeAvatar.textContent = 'Сохранение...';
 
     updateAvatarRequest(avatarLink)
         .then((data) => {
@@ -151,6 +154,7 @@ function clearPopupCreatePlaceForm(placeName, placeImage) {
 
 function handleOpenPopupCreatePlace(evt, popup, placeImage, placeName, createPopupLargeCard, handleTogglePlaceCardLike, placesCards, profile, handleOpenPopupDelete, popupDelete) {
     evt.preventDefault();
+    buttonCreatePlace.textContent = 'Создание...';
 
     createPlaceRequest({
         name: placeName.value,
@@ -215,7 +219,6 @@ popupCreatePlaceForm.addEventListener(
         handleOpenPopupCreatePlace(
             evt, popupCreatePlace, popupCreatePlaceFormImage, popupCreatePlaceFormName, createPopupLargePlaceCard, handleTogglePlaceCardLike, placesCards, selfProfile, handleOpenPopupDelete, popupDeletePlaceCard
         );
-        buttonCreatePlace.textContent = 'Создание...';
     });
 
 profileAvatar.addEventListener('click', () => {
@@ -230,7 +233,6 @@ popupFormAvatarEdit.addEventListener(
         handleUpdateAvatar(
             evt, popupAvatarEdit, popupFormAvatarEditLink.value, profileAvatar
         );
-        buttonChangeAvatar.textContent = 'Сохранение...';
     })
 
 buttonOpenPopupProfile.addEventListener(
@@ -250,7 +252,6 @@ popupProfileForm.addEventListener(
         handleUpdateProfile(
             evt, popupProfile, popupProfileFormName, popupProfileFormDescription, profileTitle, profileDescription
         );
-        buttonUpdatePopupProfile.textContent = 'Сохранение...';
     }
 );
 
